@@ -4,3 +4,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+#score {
+    text-align: center;
+    font-size: 140px;
+}
+
+.grid {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    border-style: solid;
+}
+
+.snake {
+    background-color: blue;
+}
+
+.apple {
+    background-color: red;
+}
