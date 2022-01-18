@@ -10,18 +10,3 @@
     font-size: 140px;
 }
 
-.grid {
-    width: 200px;
-    height: 200px;
-    display: flex;
-    flex-wrap: wrap;
-    border-style: solid;
-}
-
-.snake {
-    background-color: blue;
-}
-
-.apple {
-    background-color: red;
-}
