@@ -1,8 +1,10 @@
 #snakeboard {
-    position: absolute;
+    /* position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
+    border: 3px solid black;
+    background-color: black;
 }
 
 #score {
@@ -10,3 +12,9 @@
     font-size: 140px;
 }
 
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

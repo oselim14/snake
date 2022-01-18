@@ -5,50 +5,62 @@ newVal = document.createElement("p");
 newVal.innerHTML = '';
 pTag.appendChild(newVal);
 
-
+/* ---- Constants ---- */
 const board_border = 'black';
-const board_background = "white";
+const board_background = "black";
 const snake_col = 'lightblue';
 const snake_border = 'darkblue';
 
 let snake = [
     {x: 200, y: 200},
-    {x: 190, y: 200},
-    {x: 180, y: 200},
-    {x: 170, y: 200},
-    {x: 160, y: 200}
 ]
 
 let score = 0;
-let changing_direction = false;
+let changingDirection = false;
 let food_x;
 let food_y;
 let dx = 10;
 let dy = 0;
+let speed = 100;
 
 const snakeboard = document.getElementById("snakeboard");
 const snakeboard_ctx = snakeboard.getContext("2d");
-main();
+init();
 
 gen_food();
 
-document.addEventListener("keydown", change_direction);
+document.addEventListener("keydown", changeDirection);
+document.querySelector('button').addEventListener('click', restart);
 
-function main() {
+function init() {
 
-    if (has_game_ended()) return;
-
-    changing_direction = false;
+    if (gameEnded()) return;
+    
+    changingDirection = false;
     setTimeout(function onTick() {
-        clear_board();
+        clearBoard();
         drawFood();
-        move_snake();
+        moveSnake();
         drawSnake();
-        main();
+        init();
   }, 100)
 }
 
-function clear_board() {
+function restart() {
+    score = 0;
+    snake=[{x: 200, y: 200}];
+    speed = 100;
+    changingDirection = false;
+    setTimeout(function onTick() {
+        clearBoard();
+        drawFood();
+        moveSnake();
+        drawSnake();
+        init();
+  }, speed)
+}
+
+function clearBoard() {
     snakeboard_ctx.fillStyle = board_background;
     snakeboard_ctx.strokestyle = board_border;
     snakeboard_ctx.fillRect(0, 0, snakeboard.width, snakeboard.height);
@@ -56,7 +68,7 @@ function clear_board() {
   }
 
 function drawSnake() {
-    snake.forEach(drawSnakePart)
+    snake.forEach(drawSnakePart);
 }
 
 function drawFood() {
@@ -73,39 +85,46 @@ function drawSnakePart(snakePart) {
     snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
 }
 
-function has_game_ended() {
+function gameEnded() {
     for (let i = 4; i < snake.length; i++) {
-      if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
+      if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+        return true
+      }
     }
     const hitLeftWall = snake[0].x < 0;
     const hitRightWall = snake[0].x > snakeboard.width - 10;
     const hitToptWall = snake[0].y < 0;
     const hitBottomWall = snake[0].y > snakeboard.height - 10;
+    if (hitLeftWall || hitRightWall || hitToptWall || hitBottomWall){
+    }
     return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall
   }
 
-function random_food(min, max) {
+function randomFood(min, max) {
     return Math.round((Math.random() * (max-min) + min) / 10) * 10;
 }
 
 
 function gen_food() {
-    food_x = random_food(0, snakeboard.width - 10);
-    food_y = random_food(0, snakeboard.height - 10);
+    food_x = randomFood(0, snakeboard.width - 10);
+    food_y = randomFood(0, snakeboard.height - 10);
     snake.forEach(function has_snake_eaten_food(part) {
         const has_eaten = part.x == food_x && part.y == food_y;
-        if (has_eaten) gen_food();
+        if (has_eaten) {
+            speed *= 0.1;
+            gen_food();
+        }
     });
 }
 
-function change_direction(event) {
+function changeDirection(event) {
     const LEFT_KEY = 37;
     const RIGHT_KEY = 39;
     const UP_KEY = 38;
     const DOWN_KEY = 40;
     
-if (changing_direction) return;
-    changing_direction = true;
+if (changingDirection) return;
+    changingDirection = true;
     const keyPressed = event.keyCode;
     const goingUp = dy === -10;
     const goingDown = dy === 10;
@@ -129,7 +148,7 @@ if (changing_direction) return;
     }
 }
 
-function move_snake() {
+function moveSnake() {
     const head = {x: snake[0].x + dx, y: snake[0].y + dy};
     snake.unshift(head);
     const has_eaten_food = snake[0].x === food_x && snake[0].y === food_y;
