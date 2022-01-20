@@ -6,7 +6,7 @@ newVal.innerHTML = '';
 pTag.appendChild(newVal);
 
 /* ---- Constants ---- */
-const board_border = 'black';
+const board_border = 'grey';
 const board_background = "black";
 const snake_col = 'lightblue';
 const snake_border = 'darkblue';
