@@ -22,6 +22,7 @@ let food_y;
 let dx = 10;
 let dy = 0;
 let speed = 100;
+let intervalTime = 100;
 
 const snakeboard = document.getElementById("snakeboard");
 const snakeboard_ctx = snakeboard.getContext("2d");
@@ -43,7 +44,7 @@ function init() {
         moveSnake();
         drawSnake();
         init();
-  }, 100)
+  }, intervalTime)
 }
 
 function restart() {
@@ -57,7 +58,7 @@ function restart() {
         moveSnake();
         drawSnake();
         init();
-  }, speed)
+  }, 100)
 }
 
 function clearBoard() {
@@ -106,12 +107,14 @@ function randomFood(min, max) {
 
 
 function gen_food() {
+
     food_x = randomFood(0, snakeboard.width - 10);
     food_y = randomFood(0, snakeboard.height - 10);
     snake.forEach(function has_snake_eaten_food(part) {
         const has_eaten = part.x == food_x && part.y == food_y;
         if (has_eaten) {
-            speed *= 0.1;
+            intervalTime = speed * 0.5;
+            console.log('hello');
             gen_food();
         }
     });
