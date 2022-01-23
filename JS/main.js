@@ -113,18 +113,30 @@ function gen_food() {
     snake.forEach(function has_snake_eaten_food(part) {
         const has_eaten = part.x == food_x && part.y == food_y;
         if (has_eaten) {
-            intervalTime = speed * 0.5;
-            console.log('hello');
+            intervalTime = speed * 0.9;
             gen_food();
         }
     });
 }
 
+document.addEventListener('touchstart', touchHandler);
+document.addEventListener('touchmove', touchHandler);
+
+function touchHandler(e){
+    if (e.touches) {
+        left = e.touches[0].pageX - canvas.offsetLeft;
+        right = e.touches[0].pageX + canvas.offsetright;
+        up = e.touches[0].pageY + canvas.offsetup;
+        down = e.touches[0].pageY - canvas.offsetdown;
+    }
+}
+
+
 function changeDirection(event) {
-    const LEFT_KEY = 37;
-    const RIGHT_KEY = 39;
-    const UP_KEY = 38;
-    const DOWN_KEY = 40;
+    const LEFT_KEY = 37 || left;
+    const RIGHT_KEY = 39 || right;
+    const UP_KEY = 38 || up;
+    const DOWN_KEY = 40 || down;
     
 if (changingDirection) return;
     changingDirection = true;
